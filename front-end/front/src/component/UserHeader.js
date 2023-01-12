@@ -33,7 +33,7 @@ function UserHeader(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="#action1">Home</Nav.Link>
+                  <Nav.Link href="/">Home</Nav.Link>
                   <Nav.Link href="#action2">Restaurants</Nav.Link>
                 </Nav>
                 <Form className="d-flex">
@@ -43,7 +43,7 @@ function UserHeader(){
                     className="me-2"
                     aria-label="Search"
                   /> */}
-                  <Button className='me-5' variant="outline-success">Login</Button>
+                  <Button className='me-5' variant="outline-success" href="login">Login</Button>
                 </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
