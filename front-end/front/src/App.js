@@ -10,6 +10,7 @@ import PrivateRoutes from './component/PrivateRoutes';
 import {setAuthToken} from './helpers/setAuthToken.js';
 //component
 import UserHeader from './component/UserHeader';
+import Footer from './component/Footer';
 
 
 
@@ -18,6 +19,7 @@ function BasicLayout(){
     <>
       <UserHeader/>
       <Outlet />
+      <Footer />
     </>
   )
 }
@@ -30,7 +32,7 @@ function App() {
   }
     
   return(
-    <div >
+    <div className="App">
            <Routes>
               <Route element ={<PrivateRoutes/>}>
                 {/* <Route path='other' element={<Other/>}/> */}
