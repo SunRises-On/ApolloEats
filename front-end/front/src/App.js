@@ -6,6 +6,7 @@ import {Navigate, Routes, Route, Outlet } from "react-router-dom";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Restaurants from './pages/Restaurants';
 import PrivateRoutes from './component/PrivateRoutes';
 import {setAuthToken} from './helpers/setAuthToken.js';
 //component
@@ -35,7 +36,7 @@ function App() {
     <div className="App">
            <Routes>
               <Route element ={<PrivateRoutes/>}>
-                {/* <Route path='other' element={<Other/>}/> */}
+                <Route path='restaurants' element={<Restaurants/>}/> 
               </Route>
               <Route path="/" element={<BasicLayout/>}>
                 <Route index element={<Home/>} />
