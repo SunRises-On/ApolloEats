@@ -1,92 +1,39 @@
 import React from "react";
-import { Container, Row, Col, Card, Form, Button, InputGroup, FormCheck } from "react-bootstrap";
+import * as Yup from 'yup';
+import { Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 // import './style/RegisterStyle.css';
-import { ErrorResponse } from "@remix-run/router";
-import { useState } from "react";
+import { useFormik } from "formik";
 
 function Register(){
-    const [validated, setValidated]=useState(false);
-    const [userValid, setUserValid]= useState(false);
-    const [form, setForm] = useState({});
-    const [errors, setErrors]=useState({});
-
-    const setField = (field, value)=>{
-        setForm({
-            ...form,
-            [field]: value
-        })
-        //Check and see if errors exist, and remove from the error object:
-        if(!!errors[field]) setErrors({
-            ...ErrorResponse,
-            [field]:null
-        })
-    }
-    const findFormErrors  =()=>{
-        const{username}= form;
-        const newErrors={};
-        //only letters, length is 8-29 
-        var usernameRegex= "^[A-Za-z]{8,29}$";
-        //name errors
-        if(!username || username === '') {
-            newErrors.name = 'Please input username';
-            setUserValid(false);
-        }
-        else if(username.length <= 7){
-            newErrors.name = 'Must have more than 7 characters.'
-            setUserValid(false);
-        }
-        else if(!username.match(usernameRegex)){
-            newErrors.name = 'Can contain only letters.'
-            setUserValid(false);
-        }
-        else if(username.match(usernameRegex)){
-            setUserValid(true);
-        }
-        return newErrors;
-    }
-    //const handleSubmit= (username,email,password)=>{
-    const handleSubmit =(e)=>{
-        e.preventDefault();
-        //get our new errors
-        const newErrors=findFormErrors();
-        // const form = e.currentTarget;
-        if(Object.keys(newErrors).length>0){
-            setErrors(newErrors);
-            //setUserValid(false);
-            console.log('Component: sendVerificationCode not working')
-
-            // Event: Cancels Event (Stops HTML Default Form Submit)
-            e.preventDefault();
-
-            // Event: Prevents Event Bubbling To Parent Elements
-            e.stopPropagation();
-
-        }else{
-            //alert('No Errors');
-            setUserValid(true);
-            console.log(form);
-        }
 
 
-        // setValidated(true);
-        // e.preventDefault();
-        // console.log(registerPayload);
-       // RegisterService.register(registerPayload).then(response =>{
-          //get token from response
-        //  const token = response.data.token;
-          //set JWT token to sessionStorage
-         // sessionStorage.setItem("token",token);
-          //set token to axios common header
-         // setAuthToken(token);
-          //redirect user to weather temps
-         // window.location.href='/weather';
-        //})
-          //.catch(error=>ErrorService.handle(error));
-    };
+    const formik = useFormik({
+        initialValues:{
+            username:"", email:"",password:"",
+        },
+        validationSchema: Yup.object({
+        //elements must be of type string
+        username: Yup.string()
+        // .matches(!usernameRegEx, "*Username format not valid. Username can only be letters.")
+            .min(3, "*Usernames must have at least 3 characters.")
+            .max(100, "*Usernames can't be longer than 100 characters")
+            .required("*Username is required"),
+        email: Yup.string()
+            .email("*Must be a valid email address")
+            .max(100, "*Email must be less than 100 characters")
+            .required("*Email is required"),
+        password: Yup.string()
+            .required("*Password required.")
+        }),
+        onSubmit: values =>{
+            alert(JSON.stringify(values));
+        },
+    });
+     
+    const usernameRegEx = 'var usernameRegex= "^[A-Za-z]{3,100}$"';
+    const emailRegEx = '';
+    const passwordRegEx='';
     
-
-    
-
     return(
         <div className="main">
             <Container className="d-flex align-items-center justify-content-center" style={{height: '80vh'}}>
@@ -94,86 +41,80 @@ function Register(){
                     <Col>
                         <Card className="m-5" style={{maxWidth: '600px'}}>
                             <Card.Body className='px-5'>
-                                <Form 
-                                noValidate 
-                                validate={validated? 1:0} 
-                                onSubmit={handleSubmit}
-                                >
+                                <Form onSubmit={formik.handleSubmit} >
                                     <br/>
                                     <h2>CREATE AN ACCOUNT</h2>
-                                    <Form.Group className="mb-3 " style={{textAlign:"left"}} controlId="validationCustom01">
-                                        <Form.Label >Username</Form.Label>
-                                        <InputGroup
-                                            id="usernameId"
-                                            hasValidation
-                                        >
-                                            <Form.Control 
-                                            required
-                                            type="text" 
-                                            onChange={e=>setField('username',e.target.value)}
-                                            isInvalid={!userValid}
-                                            isValid={userValid}
-                                            placeholder="Enter username" 
-                                            />
-                                            <Form.Control.Feedback type="invalid" role="alert">{errors.name}</Form.Control.Feedback>
-                                            <Form.Control.Feedback type="valid">Looks Great!</Form.Control.Feedback>
-                                            
-                                        </InputGroup>
-                                        
-                                        {/* <Form.Control 
-                                        required
-                                        type="text" 
-                                        // value={registerPayload.username}
-                                        placeholder="Enter username" 
-                                        // name="username"
-                                        // onChange={handleChange}                                            
-                                        />
-                                        <Form.Control.Feedback 
-                                        type="invalid" 
-                                        role="alert"
-                                        >Please choose a username.</Form.Control.Feedback>
-                                        <Form.Control.Feedback type="valid">Looks Great!</Form.Control.Feedback> */}
-                                        
-                                    </Form.Group>
-                                    <br/><br/>
-                                    {/* <Form.Group className="mb-3" style={{textAlign:"left"}}  controlId="formBasicEmail" >
-                                        <Form.Label>Email address</Form.Label>
-                                        <Form.Control 
-                                        type="email" 
-                                        placeholder="Enter email"
-                                        name="email"
-                                        onChange={handleChange}
-                                        required
-                                        />
-                                        <Form.Text className="text-muted">
-                                            We'll never share your email with anyone else.
-                                        </Form.Text>
-                                        <Form.Control.Feedback>Looks great!</Form.Control.Feedback>
-                                    </Form.Group> 
-
-                                    <Form.Group className="mb-3" style={{textAlign:"left"}} controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control 
-                                        type="password" 
-                                        placeholder="Password"
-                                        name="password"
-                                        onChange={handleChange}
-                                        required
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Password must be 8-20 characters, with a mix of letters and numbers.
-                                        </Form.Control.Feedback>
-                                    </Form.Group> */}
-
-                                    <Button 
-                                    variant="primary" 
-                                    type="submit"
-                                    // onClick={(e)=>handleSubmit(e)}
+                                    <Form.Group controlId="formUsername" 
+                                    className="mb-3"
+                                    style={{textAlign:"left"}}
                                     >
+                                        <Form.Label>Username :</Form.Label>
+                                        <Form.Control 
+                                        type="text"
+                                        name="username"
+                                        placeholder="Username"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.username}
+                                        //touched is a formik property, been clicked on
+                                        // isInvalid={touched.username && errors.username}
+                                        className={formik.touched.username && formik.errors.username ? "is-invalid" : (formik.touched.username && !formik.errors.username ? "is-valid" : null)}
+                                        />
+                                        {formik.touched.username && formik.errors.username ? (
+                                            <div style={{color:'#FF6565', padding:'.5em .2em', height:'1em', position:'absolute' ,fontSize:'.8em'}}
+                                            >
+                                                {formik.errors.username}
+                                            </div>
+                                        ):null}
+                                    </Form.Group>
+                                    <br/>
+                                    <Form.Group controlId="formEmail" 
+                                    className="mb-3"
+                                    style={{textAlign:"left"}}
+                                    >
+                                        <Form.Label>Email :</Form.Label>
+                                        <Form.Control
+                                        type="text"
+                                        name="email"
+                                        placeholder="Email"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.email}
+                                        className={formik.touched.email && formik.errors.email ? "is-invalid" : (formik.touched.email && !formik.errors.email ? "is-valid" : null)}
+                                        />
+                                        {formik.touched.email && formik.errors.email ? (
+                                            <div style={{color:'#FF6565', padding:'.5em .2em', height:'1em', position:'absolute' ,fontSize:'.8em'}}
+                                            >
+                                                {formik.errors.email}
+                                            </div>
+                                        ):null}
+                                    </Form.Group>
+                                    <br/>
+                                    <Form.Group controlId="formPassword"
+                                    className="mb-3"
+                                    style={{textAlign:"left"}}
+                                    >
+                                        <Form.Label>Password :</Form.Label>
+                                        <Form.Control
+                                        type="text"
+                                        name="password"
+                                        placeholder="Password"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.password}
+                                        className={formik.touched.password && formik.errors.password ? "is-invalid" : (formik.touched.password && !formik.errors.password ? "is-valid" : null)}
+                                        />
+                                        {formik.touched.password && formik.errors.password ? (
+                                            <div style={{color:'#FF6565', padding:'.5em .2em', height:'1em', position:'absolute' ,fontSize:'.8em'}}
+                                            >
+                                                {formik.errors.password}
+                                            </div>
+                                        ):null}
+                                    </Form.Group>
+                                    <br/>
+                                    <Button variant="primary" type="submit">
                                         Submit
                                     </Button>
-                                    <br/>
-                                    <br/>
                                 </Form>
                             </Card.Body>
                         </Card>
