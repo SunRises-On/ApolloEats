@@ -27,6 +27,17 @@ function Register(){
         }),
         onSubmit: values =>{
             alert(JSON.stringify(values));
+        //    RegisterService.register(values).then(response=>{
+                //get token from response
+        //        const token = response.data.token;
+                //set JWT token to sessionStorage
+        //        sessionStorage.setItem("token",token);
+                //set token to axios common header
+       //         setAuthToken(token);
+                //redirect to restaurants
+        //        window.location.href='restaurants';
+        //    })
+        //    .catch(error=>ErrorService.handle(error));
         },
     });
      
