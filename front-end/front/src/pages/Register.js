@@ -3,6 +3,9 @@ import * as Yup from 'yup';
 import { Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 // import './style/RegisterStyle.css';
 import { useFormik } from "formik";
+import RegisterService from '../services/RegisterService';
+import ErrorService from '../services/ErrorService';
+import { setAuthToken } from "../helpers/setAuthToken";
 
 function Register(){
 
@@ -26,18 +29,18 @@ function Register(){
             .required("*Password required.")
         }),
         onSubmit: values =>{
-            alert(JSON.stringify(values));
-        //    RegisterService.register(values).then(response=>{
+            //alert(JSON.stringify(values));
+            RegisterService.register(values).then(response=>{
                 //get token from response
-        //        const token = response.data.token;
+                const token = response.data.token;
                 //set JWT token to sessionStorage
-        //        sessionStorage.setItem("token",token);
+                sessionStorage.setItem("token",token);
                 //set token to axios common header
-       //         setAuthToken(token);
+                setAuthToken(token);
                 //redirect to restaurants
-        //        window.location.href='restaurants';
-        //    })
-        //    .catch(error=>ErrorService.handle(error));
+                window.location.href='restaurants';
+            })
+            .catch(error=>ErrorService.handle(error));
         },
     });
      
