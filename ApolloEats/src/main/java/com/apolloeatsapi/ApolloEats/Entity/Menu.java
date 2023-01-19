@@ -24,10 +24,10 @@ public class Menu {
 
     @Lob
     @Column(name="file")
-    private byte[] file;
+    private String file;
 
-    @Column(name="dishes")
-    private Map<String,Integer> dishes;
+//    @Column(name="dishes")
+//    private Map<String,Integer> dishes;
 
     @OneToOne(mappedBy = "menu")
     private Restaurant restaurant;

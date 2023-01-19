@@ -4,14 +4,16 @@ import com.apolloeatsapi.ApolloEats.Entity.Menu;
 import com.apolloeatsapi.ApolloEats.Entity.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestaurantRepo extends JpaRepository<Restaurant, Long> {
-    Optional<Restaurant> findByName(String name);
+public interface MenuRepo extends JpaRepository<Menu, Long> {
 
-    List<Restaurant> findByRegistered(boolean registered);
+    @Transactional
+    void deleteById(long id);
 
+    @Transactional
+    void deleteByRestaurantId(long resturantId);
 }

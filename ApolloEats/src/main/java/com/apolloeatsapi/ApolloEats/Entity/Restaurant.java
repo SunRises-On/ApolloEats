@@ -6,12 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name="restaurant")
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name="restaurant")
 public class Restaurant {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class Restaurant {
 
     @Column(name="name")
     private String name;
+
+    @Column(name="registered")
+    private boolean registered;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")

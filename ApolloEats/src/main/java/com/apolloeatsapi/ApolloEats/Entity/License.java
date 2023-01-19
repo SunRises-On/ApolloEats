@@ -23,7 +23,7 @@ public class License {
 
     @Lob
     @Column(name="file")
-    private byte[] file;
+    private String file;
 
     @OneToOne(mappedBy = "license")
     private Restaurant restaurant;

@@ -21,7 +21,7 @@ public class Image {
     private String filename;
 
     @Lob
-    @Column(name="pic")
+    @Column(name="pic", columnDefinition = "BLOB")
     private byte[] pic;
 
     @OneToOne(mappedBy = "image")
