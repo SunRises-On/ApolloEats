@@ -20,7 +20,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
+/*****
+* Restaurant Service handles files uploaded and stores it in the database.
+ * For Entity Image - it is stored in a byte[] and is a BLOB
+ * For Entities License and Menu - it is stored as a string and are CLOBs.
+ * Therefore, we turn a MultipartFile into a File. Then
+ * convert the file into Base64 String. Then store into the database.
+ *
+ * Why Base 64 String?
+ * Base 64 is an encoding scheme that converts binary data into text
+ * format, so the encoded textual data can be transported over the network
+ * uncorrupted and without data loss.
+* */
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
