@@ -12,7 +12,7 @@ function UserHeader(){
         <Navbar className="mb-3">
           <Container fluid>
           <NavDropdown className='ms-5 me-5' title="Menu">
-            <NavDropdown.Item href="#action3">Register Restaurant</NavDropdown.Item>
+            <NavDropdown.Item href="restaurants/register">Register Restaurant</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action4">
                     Another action
                 </NavDropdown.Item>
@@ -34,7 +34,7 @@ function UserHeader(){
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="/">Home</Nav.Link>
-                  <Nav.Link href="#action2">Restaurants</Nav.Link>
+                  <Nav.Link href="restaurants">Restaurants</Nav.Link>
                 </Nav>
                 <Form className="d-flex">
                   {/* <Form.Control

@@ -1,7 +1,7 @@
 
 function Restaurants(){
     return(
-        <div>
+        <div className="main">
             <h1>
                 Private information
             </h1>

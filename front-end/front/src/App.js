@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Restaurants from './pages/Restaurants';
+import RestRegister from './pages/RestRegister';
 import PrivateRoutes from './component/PrivateRoutes';
 import {setAuthToken} from './helpers/setAuthToken.js';
 //component
@@ -36,7 +37,10 @@ function App() {
     <div className="App">
            <Routes>
               <Route element ={<PrivateRoutes/>}>
-                <Route path='restaurants' element={<Restaurants/>}/> 
+                <Route element={<BasicLayout/>}>
+                  <Route path='restaurants' element={<Restaurants/>}/>
+                  <Route path='restaurants/register' element={<RestRegister/>}/> 
+                </Route>
               </Route>
               <Route path="/" element={<BasicLayout/>}>
                 <Route index element={<Home/>} />
