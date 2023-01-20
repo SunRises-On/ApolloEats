@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
 @CrossOrigin(value="http://localhost:3000")
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> upload(
             @RequestPart(value = "restaurant", required=true) Restaurant restaurant,
             @RequestPart(value = "files", required = true) MultipartFile files[]
-    ){
+    ) throws IOException {
         return ResponseEntity.ok(service.upload(restaurant, files));
     }
 

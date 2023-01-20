@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Data //provide getter and setter
 @Builder
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class Image {
     @Column(name="filename")
     private String filename;
 
-    @Lob
+    @Lob @Basic(fetch=LAZY)
     @Column(name="pic", columnDefinition = "BLOB")
     private byte[] pic;
 

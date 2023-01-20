@@ -29,64 +29,34 @@ public class RestaurantService {
     private final MenuRepo menuRepo;
     private final RestaurantRepo restaurantRepo;
 
-    public Restaurant upload(Restaurant restaurant, MultipartFile files[]){
+    public Restaurant upload(Restaurant restaurant, MultipartFile files[]) throws IOException {
         //save restaurant to repository
         Restaurant newRestaurant = restaurantRepo.save(restaurant);
 
-        try{
-            for(int i = 0; i<3; i++){
-                MultipartFile file = files[i];
-                Image image = new Image();
-                License license = new License();
-                Menu menu = new Menu();
+        try {
 
-                String fileName = file.getOriginalFilename();
-                //String sourceFileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+            Image image = getImage(files[0], newRestaurant);
+            imageRepo.save(image);
+            File temp = getFileClob(files[1], files[1].getOriginalFilename());
+            License license = getLicense(files[1], newRestaurant, temp);
+            licenseRepo.save(license);
+            temp = getFileClob(files[2], files[2].getOriginalFilename());
+            Menu menu = getMenu(files[2], newRestaurant, temp);
+            menuRepo.save(menu);
 
-                if(i == 0){
-                    //this is string lob turn to byte[]
-                    byte[] sourceFileContent = file.getBytes();
 
-                    image.setFilename(fileName);
-                    image.setPic(sourceFileContent);
-                    image.setRestaurant(newRestaurant);
-                    imageRepo.save(image);
-                }
-                else if( i == 1){
-                    //this is a blob for text get char[]
-//                    String sourceFileContent;
-//                    LineIterator it = FileUtils.lineIterator(file, "UTF-8");
-//                    try{
-//                        while (it.hasNext()){
-//                            String line = it.nextLine();
-//                            sourceFileContent = sourceFileContent + line;
-//                        }
-//                    }finally{
-//                        LineIterator.closeQuietly(it);
-//                    }
-//
-//                    license.setFilename(fileName);
-//                    license.setFile(sourceFileContent);
-//                    license.setRestaurant(newRestaurant);
-//                    licenseRepo.save(license);
-                }
-                else if ( i==2){
-//                    menu.setFilename(fileName);
-//                    menu.setFile(sourceFileContent);
-//                    menu.setRestaurant(newRestaurant);
-//                    menuRepo.save(menu);
+            newRestaurant.setImage(image);
+            newRestaurant.setLicense(license);
+            newRestaurant.setMenu(menu);
+            restaurantRepo.save(newRestaurant);
 
-//                    newRestaurant.setImage(image);
-//                    newRestaurant.setLicense(license);
-//                    newRestaurant.setMenu(menu);
-                }
-            }
         }catch(Exception e){
             e.printStackTrace();
         }
-
         return newRestaurant;
     }
+
+
     private File getFileClob(MultipartFile multipartFile, String fileName) throws FileNotFoundException {
         File tempFile = new File(fileName);
         try(FileOutputStream fos = new FileOutputStream(tempFile)){
@@ -101,4 +71,29 @@ public class RestaurantService {
         byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
         return new String(encoded, StandardCharsets.US_ASCII);
     }
+
+    private Image getImage(MultipartFile file, Restaurant restaurant) throws IOException {
+        return Image.builder()
+                .filename(file.getOriginalFilename())
+                .pic(file.getBytes())
+                .restaurant(restaurant)
+                .build();
+    }
+
+    private License getLicense(MultipartFile file, Restaurant restaurant, File temp) throws IOException {
+        return License.builder()
+                .filename(file.getOriginalFilename())
+                .file(encodeFileToBase64Binary(file.getOriginalFilename(), temp))
+                .restaurant(restaurant)
+                .build();
+    }
+
+    private Menu getMenu(MultipartFile file, Restaurant restaurant, File temp) throws IOException{
+        return Menu.builder()
+                .filename(file.getOriginalFilename())
+                .file(encodeFileToBase64Binary(file.getOriginalFilename(), temp))
+                .restaurant(restaurant)
+                .build();
+    }
 }
+
