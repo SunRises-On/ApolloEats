@@ -1,16 +1,27 @@
 import React from "react";
+import { useState } from "react";
 import * as Yup from 'yup';
 import { Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 // import './style/RegisterStyle.css';
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import UploadService from "../services/UploadService";
 import ErrorService from '../services/ErrorService';
 import { setAuthToken } from "../helpers/setAuthToken";
 function RestRestaurant(){
+    const [image,setImage]=useState("");
+    const [license,setLicense]=useState("");
+    const [menu,setMenu]=useState("");
+    function ProcessImage(localImage) {
+       
+        var reader = new FileReader();
+        var imageTransformation = reader.readAsDataURL(
+            localImage
+        );
+        console.print(imageTransformation);
+    }
     const formik = useFormik({
         initialValues:{
-            restaurant: { name:"", registered:true},
-            files:["","",""],
+            restaurant: { name:"", registered:true}
         },
         validationSchema: Yup.object().shape({
             restaurant: Yup.object().shape({
@@ -22,8 +33,25 @@ function RestRestaurant(){
             })
         }),
         onSubmit: values =>{
+            console.log(image);
             alert(JSON.stringify(values));
-            UploadService.register(values).then(response=>{
+            const formData = new FormData();
+            
+            formData.append('files', image);
+            formData.append('files', license);
+            formData.append('files', menu);
+        //    // const filesData = new FormData();
+        //     console.log(values.files[0]);
+        //     console.log(values.restaurant);
+        //     console.log(values.files[0]);
+            formData.append('restaurant',JSON.stringify(values.restaurant));
+            // for(let i = 0; i< values.files.length; i++){
+            //     formData.append('files',values.files[i]);
+            // }
+            // formData.append('files',values.files[0])
+            // console.log(values.files[0].length);
+           // formData.append(filesData);
+            UploadService.register(formData).then(response=>{
                  //get token from response
                  const token = response.data.token;
                  //set JWT token to sessionStorage
@@ -96,10 +124,8 @@ function RestRestaurant(){
                                         </Form.Label>
                                         <Form.Control 
                                         type="file" 
-                                        name="files[0]"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.files[0]}
+                                        name="fileList"
+                                        onChange = {(e)=>setImage(e.target.files[0])}
                                         />
                                     </Form.Group>
                                     <Form.Group controlId="formFile"
@@ -111,10 +137,8 @@ function RestRestaurant(){
                                         </Form.Label>
                                         <Form.Control 
                                         type="file" 
-                                        name="files[1]"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.files[1]}
+                                        name="filesList"
+                                        onChange = {(e)=>setLicense(e.target.files[0])}
                                         />
                                     </Form.Group>
                                     <Form.Group controlId="formFile"
@@ -126,12 +150,10 @@ function RestRestaurant(){
                                         </Form.Label>
                                         <Form.Control 
                                         type="file" 
-                                        name="files[2]"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.files[2]}
+                                        name="filesList"
+                                        onChange={(e)=>setMenu(e.target.files[0])}
                                         />
-                                    </Form.Group>
+                                    </Form.Group> 
                                     <br/>
                                     <Button variant="primary" type="submit">
                                         Submit

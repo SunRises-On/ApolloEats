@@ -2,6 +2,7 @@ package com.apolloeatsapi.ApolloEats.Controller;
 
 import com.apolloeatsapi.ApolloEats.Entity.Restaurant;
 import com.apolloeatsapi.ApolloEats.Service.RestaurantService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,9 +22,11 @@ public class RestaurantController {
 
     @PostMapping(value="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Restaurant> upload(
-            @RequestPart(value = "restaurant", required=true) Restaurant restaurant,
+            @RequestPart(value = "restaurant", required=true) String jsonRestaurant,
             @RequestPart(value = "files", required = true) MultipartFile files[]
     ) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Restaurant restaurant = mapper.readValue(jsonRestaurant, Restaurant.class);
         return ResponseEntity.ok(service.upload(restaurant, files));
     }
 
