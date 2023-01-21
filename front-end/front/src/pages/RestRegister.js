@@ -3,16 +3,17 @@ import * as Yup from 'yup';
 import { Container, Row, Col, Card, Form, Button} from "react-bootstrap";
 // import './style/RegisterStyle.css';
 import { useFormik } from "formik";
-import RegisterService from '../services/RegisterService';
+import UploadService from "../services/UploadService";
 import ErrorService from '../services/ErrorService';
 import { setAuthToken } from "../helpers/setAuthToken";
 function RestRestaurant(){
     const formik = useFormik({
         initialValues:{
-            user: { name:"", registered:true},
+            restaurant: { name:"", registered:true},
+            files:["","",""],
         },
         validationSchema: Yup.object().shape({
-            user: Yup.object().shape({
+            restaurant: Yup.object().shape({
                 name: Yup.string()
                     .min(3, "*Restaurant names must have at least 3 characters.")
                     .max(100, "*Restaurant names can't be longer than 100 characters")
@@ -22,17 +23,17 @@ function RestRestaurant(){
         }),
         onSubmit: values =>{
             alert(JSON.stringify(values));
-            // RegisterService.register(values).then(response=>{
-            //     //get token from response
-            //     const token = response.data.token;
-            //     //set JWT token to sessionStorage
-            //     sessionStorage.setItem("token",token);
-            //     //set token to axios common header
-            //     setAuthToken(token);
-            //     //redirect to restaurants
-            //     window.location.href='restaurants';
-            // })
-            // .catch(error=>ErrorService.handle(error));
+            UploadService.register(values).then(response=>{
+                 //get token from response
+                 const token = response.data.token;
+                 //set JWT token to sessionStorage
+                 sessionStorage.setItem("token",token);
+                 //set token to axios common header
+                 setAuthToken(token);
+                 //redirect to restaurants
+                 window.location.href='restaurants';
+             })
+            .catch(error=>ErrorService.handle(error));
         },
     });
     return(
@@ -52,17 +53,17 @@ function RestRestaurant(){
                                         <Form.Label>Restaurant Name :</Form.Label>
                                         <Form.Control 
                                         type="text"
-                                        name="user.name"
+                                        name="restaurant.name"
                                         placeholder="Name"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.user?.name}
-                                        className={formik.touched.user?.name && formik.errors.user?.name? "is-invalid" : (formik.touched.user?.name && !formik.errors.user?.name ? "is-valid" : null)}
+                                        value={formik.values.restaurant?.name}
+                                        className={formik.touched.restaurant?.name && formik.errors.restaurant?.name? "is-invalid" : (formik.touched.restaurant?.name && !formik.errors.restaurant?.name ? "is-valid" : null)}
                                         />
-                                        {formik.touched.user?.name && formik.errors.user?.name ? (
+                                        {formik.touched.restaurant?.name && formik.errors.restaurant?.name ? (
                                             <div style={{color:'#FF6565', padding:'.5em .2em', height:'1em', position:'absolute' ,fontSize:'.8em'}}
                                             >
-                                                {formik.errors.user?.name}
+                                                {formik.errors.restaurant?.name}
                                             </div>
                                         ):null}
                                     </Form.Group>
@@ -74,18 +75,63 @@ function RestRestaurant(){
                                         <Form.Check
                                         label={"register"}
                                         type={"checkbox"}
-                                        name="user.registered"
+                                        name="restaurant.registered"
                                         onChange={formik.handleChange}
                                         onBlur={formik.handleBlur}
-                                        value={formik.values.user?.registered}
+                                        value={formik.values.restaurant?.registered}
                                         />
-                                        {!formik.touched.user?.registered? (
+                                        {!formik.touched.restaurant?.registered? (
                                             <div style={{color:'#FF6565', padding:'.5em .2em', height:'1em', position:'absolute' ,fontSize:'.8em'}}
                                             >
                                                 Click to show restaurant after upload!
                                             </div>
                                         ):null}
-                                    </Form.Group> 
+                                    </Form.Group>
+                                    <Form.Group controlId="formFile"
+                                                className="mb-3"
+                                                style={{textAlign:"left"}}
+                                    >
+                                        <Form.Label>
+                                            Restaurant Image:
+                                        </Form.Label>
+                                        <Form.Control 
+                                        type="file" 
+                                        name="files[0]"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.files[0]}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group controlId="formFile"
+                                                className="mb-3"
+                                                style={{textAlign:"left"}}
+                                    >
+                                        <Form.Label>
+                                            Restaurant License:
+                                        </Form.Label>
+                                        <Form.Control 
+                                        type="file" 
+                                        name="files[1]"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.files[1]}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group controlId="formFile"
+                                                className="mb-3"
+                                                style={{textAlign:"left"}}
+                                    >
+                                        <Form.Label>
+                                            Restaurant Menu:
+                                        </Form.Label>
+                                        <Form.Control 
+                                        type="file" 
+                                        name="files[2]"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.files[2]}
+                                        />
+                                    </Form.Group>
                                     <br/>
                                     <Button variant="primary" type="submit">
                                         Submit

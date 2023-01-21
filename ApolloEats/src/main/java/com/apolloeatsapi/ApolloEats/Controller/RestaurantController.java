@@ -13,7 +13,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 @CrossOrigin(value="http://localhost:3000")
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/restaurant")
 public class RestaurantController {
