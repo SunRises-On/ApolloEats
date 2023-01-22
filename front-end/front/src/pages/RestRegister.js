@@ -19,6 +19,14 @@ function RestRestaurant(){
         );
         console.print(imageTransformation);
     }
+    function ProcessClob(localImage) {
+       
+        var reader = new FileReader();
+        var imageTransformation = reader.readAsDataURL(
+            localImage
+        );
+        console.print(imageTransformation);
+    }
     const formik = useFormik({
         initialValues:{
             restaurant: { name:"", registered:true}
@@ -34,6 +42,8 @@ function RestRestaurant(){
         }),
         onSubmit: values =>{
             console.log(image);
+            console.log(license);
+            console.log(menu);
             alert(JSON.stringify(values));
             const formData = new FormData();
             

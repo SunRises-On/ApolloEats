@@ -15,5 +15,5 @@ public interface MenuRepo extends JpaRepository<Menu, Long> {
     void deleteById(long id);
 
     @Transactional
-    void deleteByRestaurantId(long resturantId);
+    void deleteByRestaurantId(long restaurantId);
 }

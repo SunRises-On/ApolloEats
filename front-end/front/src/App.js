@@ -38,7 +38,7 @@ function App() {
            <Routes>
               <Route element ={<PrivateRoutes/>}>
                 <Route element={<BasicLayout/>}>
-                  <Route path='restaurants' element={<Restaurants/>}/>
+                  <Route path='restaurants/' element={<Restaurants/>}/>
                   <Route path='restaurants/register' element={<RestRegister/>}/> 
                 </Route>
               </Route>

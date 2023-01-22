@@ -11,5 +11,5 @@ public interface ImageRepo extends JpaRepository <Image, Long>{
     void deleteById(long id);
 
     @Transactional
-    void deleteByRestaurantId(long resturantId);
+    void deleteByRestaurantId(long restaurantId);
 }
