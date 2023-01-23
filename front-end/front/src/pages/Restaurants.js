@@ -1,10 +1,11 @@
-
+import Dynamic from '../component/Dynamic'; 
+import React from "react";
 function Restaurants(){
     return(
         <div className="main">
-            <h1>
-                Private information
-            </h1>
+            <div>
+                <Dynamic/>
+            </div>
         </div>
     );
 }
