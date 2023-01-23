@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.FetchType.LAZY;
 
-@Data //provide getter and setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +27,36 @@ public class Image {
 
     @OneToOne(mappedBy = "image")
     private Restaurant restaurant;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public byte[] getPic() {
+        return pic;
+    }
+
+    public void setPic(byte[] pic) {
+        this.pic = pic;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

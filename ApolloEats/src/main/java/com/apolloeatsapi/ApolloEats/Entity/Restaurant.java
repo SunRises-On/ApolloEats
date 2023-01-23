@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,4 +41,60 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(targetEntity = Dishes.class, mappedBy = "restaurant",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Dishes> dishesList;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public License getLicense() {
+        return license;
+    }
+
+    public void setLicense(License license) {
+        this.license = license;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public List<Dishes> getDishesList() {
+        return dishesList;
+    }
+
+    public void setDishesList(List<Dishes> dishesList) {
+        this.dishesList = dishesList;
+    }
 }

@@ -6,9 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.FetchType.LAZY;
 
-@Data //provide getter and setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,9 +24,41 @@ public class Dishes {
     private String name;
 
     @Column(name="price")
-    private Integer price;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id",referencedColumnName = "id")
     private Restaurant restaurant;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

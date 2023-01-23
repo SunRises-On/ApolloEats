@@ -4,10 +4,7 @@ import com.apolloeatsapi.ApolloEats.Entity.Image;
 import com.apolloeatsapi.ApolloEats.Entity.License;
 import com.apolloeatsapi.ApolloEats.Entity.Menu;
 import com.apolloeatsapi.ApolloEats.Entity.Restaurant;
-import com.apolloeatsapi.ApolloEats.Repo.ImageRepo;
-import com.apolloeatsapi.ApolloEats.Repo.LicenseRepo;
-import com.apolloeatsapi.ApolloEats.Repo.MenuRepo;
-import com.apolloeatsapi.ApolloEats.Repo.RestaurantRepo;
+import com.apolloeatsapi.ApolloEats.Repo.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -37,29 +34,23 @@ import java.nio.charset.StandardCharsets;
 public class RestaurantService {
     private final ImageRepo imageRepo;
     private final LicenseRepo licenseRepo;
+    private final DishesRepo dishesRepo;
     private final MenuRepo menuRepo;
     private final RestaurantRepo restaurantRepo;
 
-    public Restaurant upload(Restaurant restaurant, MultipartFile files[]) throws IOException {
+    public Restaurant upload(Restaurant restaurant, MultipartFile[] files) throws IOException {
         //save restaurant to repository
         Restaurant newRestaurant = restaurantRepo.save(restaurant);
 
         try {
-
-            Image image = getImage(files[0], newRestaurant);
-            imageRepo.save(image);
-            File temp = getFileClob(files[1], files[1].getOriginalFilename());
-            License license = getLicense(files[1], newRestaurant, temp);
-            licenseRepo.save(license);
-            temp = getFileClob(files[2], files[2].getOriginalFilename());
-            Menu menu = getMenu(files[2], newRestaurant, temp);
-            menuRepo.save(menu);
-
-
-            newRestaurant.setImage(image);
-            newRestaurant.setLicense(license);
-            newRestaurant.setMenu(menu);
-            restaurantRepo.save(newRestaurant);
+            //make Entity Image
+            saveImageEntity(files[0],restaurant);
+            //make Entity License
+            saveLicenseEntity(files[1],restaurant);
+            //make Entity List<Dishes>
+            saveDishesEntity(files[2],restaurant);
+            //make Entity Menu
+            saveMenuEntity(files[2], restaurant);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -72,7 +63,7 @@ public class RestaurantService {
         File tempFile = new File(fileName);
         try(FileOutputStream fos = new FileOutputStream(tempFile)){
             fos.write(multipartFile.getBytes());
-            fos.close();
+            //fos.close();
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -106,5 +97,38 @@ public class RestaurantService {
                 .restaurant(restaurant)
                 .build();
     }
+
+    private void saveImageEntity(MultipartFile file, Restaurant restaurant) throws IOException {
+        //make Entity Image
+        Image image = getImage(file, restaurant);
+        imageRepo.save(image);
+        restaurant.setImage(image);
+        restaurantRepo.save(restaurant);
+    }
+
+    private void saveLicenseEntity(MultipartFile file, Restaurant restaurant) throws IOException{
+        File temp = getFileClob(file, file.getOriginalFilename());
+        License license = getLicense(file, restaurant, temp);
+        licenseRepo.save(license);
+        restaurant.setLicense(license);
+        restaurantRepo.save(restaurant);
+    }
+    private void saveDishesEntity(MultipartFile file, Restaurant restaurant) throws IOException{
+        File temp = getFileClob(file, file.getOriginalFilename());
+        //    CopyFile copyFile = new CopyFile();
+        //   File file = new File("temp.txt");
+        //  copyFile.copyFile(temp, file);
+        CSVReader csvReader = new CSVReader(dishesRepo,restaurantRepo);
+        csvReader.read(temp, restaurant);
+    }
+
+    private void saveMenuEntity(MultipartFile file, Restaurant restaurant) throws  IOException{
+        File temp = getFileClob(file, file.getOriginalFilename());
+        Menu menu = getMenu(file, restaurant, temp);
+        menuRepo.save(menu);
+        restaurant.setMenu(menu);
+        restaurantRepo.save(restaurant);
+    }
+
 }
 
