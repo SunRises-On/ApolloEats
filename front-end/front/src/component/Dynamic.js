@@ -6,18 +6,17 @@ export default function Dynamic(){
 
     //restaurant data
     const [restData, setRestData] = useState([]);
-    const [im,setIm] = useState("");
     function getRegRestaurants (){
         RestaurantsService.getRestaurants().then(response=>{
-           // console.log(response.data);
-           // console.log(response.data.list);
-           const temp = response.data;
+            console.log(response.data);
+            console.log(response.data.restaurant)
+           const temp = response.data.restaurant;
            setRestData(JSON.parse(JSON.stringify(temp)));
+           console.log(JSON.stringify(restData));
           // console.log("At array(0) :" + JSON.stringify(temp.at(0)) );
-          console.log("At array(0) " + JSON.stringify(restData.at(0).name));
+          console.log("At array(0) " + JSON.stringify(restData.at(0)));
 
-           console.log("At array(1) " + JSON.stringify(restData.at(1).name));
-            setIm(JSON.stringify(restData.at(0).image));
+         //  console.log("At array(1) " + JSON.stringify(restData.at(1).name));
         }).catch(error=>{
             console.log("Error from Dynamic.js");
             ErrorService.handle(error);
@@ -43,8 +42,8 @@ export default function Dynamic(){
                                 <Card.Title>{rest.name}</Card.Title>
                             </Card.Body> 
                         </Card>
-                    </Col>
-                ))}
+                    </Col> 
+                ))} 
             </Row>
         </Container>
     )

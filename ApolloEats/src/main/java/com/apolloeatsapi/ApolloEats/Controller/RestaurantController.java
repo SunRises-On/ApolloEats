@@ -48,26 +48,28 @@ public class RestaurantController {
     }
 
     @GetMapping("/")
-    public List<Map<String,Object>> GetRestaurants(){
+    public Map<String,ArrayList<Map<String,Object>>> GetRestaurants(){
         //get list of restaurants with registered=true
         List<Restaurant> restaurantList = restaurantRepo.findByRegistered(true);
-        //get list of images
-        List<List<Map<String,Object>>> listList = new ArrayList<>();
-        List<Map<String,Object>> list = new ArrayList<>();
-        Map<String,Object> map = new HashMap<>();
 
+        Map<String, ArrayList<Map<String,Object>>> mapArrayListMap = new HashMap<>();
+        ArrayList<Map<String,Object>> arrayListMap = new ArrayList<>();
+        Integer index= 0;
         for(Restaurant restaurant : restaurantList){
+            Map<String,Object> map = new HashMap<>();
+
             String restaurantName = restaurant.getName();
             map.put("name", restaurantName);
             byte[] imageByte = restaurant.getImage().getPic();
             map.put("image", imageByte);
 
-            list.add(map);
+            arrayListMap.add(map);
+            mapArrayListMap.put("restaurant",arrayListMap);
 
-            listList.add(list);
+            //mapReturn.put(index,map);
             System.out.println("Restaurant name : " + restaurantName);
         }
-        return  list;
+        return  mapArrayListMap;
     }
 
 

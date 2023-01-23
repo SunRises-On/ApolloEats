@@ -83,7 +83,7 @@ function Login(){
                                     </Button>
                                     <br/><br/>
                                     <p style={{fontSize:'.8em', textAlign:"left"}}>
-                                        Don't have an account? <a href='register' class='link-info' style={{fontSize:'1em'}}>Sign up</a></p>
+                                        Don't have an account? <a href='register' className='link-info' style={{fontSize:'1em'}}>Sign up</a></p>
                                 </Form>
                             </Card.Body>
                         </Card>

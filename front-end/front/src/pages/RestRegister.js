@@ -62,14 +62,9 @@ function RestRestaurant(){
             // console.log(values.files[0].length);
            // formData.append(filesData);
             UploadService.register(formData).then(response=>{
-                 //get token from response
-                 const token = response.data.token;
-                 //set JWT token to sessionStorage
-                 sessionStorage.setItem("token",token);
-                 //set token to axios common header
-                 setAuthToken(token);
+                 
                  //redirect to restaurants
-                 window.location.href='restaurants';
+                 window.location.href='restaurants/';
              })
             .catch(error=>ErrorService.handle(error));
         },
