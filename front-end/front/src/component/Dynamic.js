@@ -37,7 +37,10 @@ export default function Dynamic(){
                 <Row>
                     {restData.map((rest, k)=>(
                         <Col key={k} xs={12} md={4} lg={3}>
-                            <Card className='m-2'>
+                            <Card hoverable
+                            className='m-2'
+                            onClick={()=>{alert("Hello from here")}}
+                            >
                             
                                 <Card.Img src={'data:image/png;base64,'+rest.image}/>
                                 <Card.Body>
