@@ -9,12 +9,12 @@ export default function Dynamic(){
     function getRegRestaurants (){
         RestaurantsService.getRestaurants().then(response=>{
             console.log(response.data);
-            console.log(response.data.restaurant)
+            //console.log(response.data.restaurant)
            const temp = response.data.restaurant;
            setRestData(JSON.parse(JSON.stringify(temp)));
-           console.log(JSON.stringify(restData));
+         //  console.log(JSON.stringify(restData));
           // console.log("At array(0) :" + JSON.stringify(temp.at(0)) );
-          console.log("At array(0) " + JSON.stringify(restData.at(0)));
+          //console.log("At array(0) " + JSON.stringify(restData.at(0)));
 
          //  console.log("At array(1) " + JSON.stringify(restData.at(1).name));
         }).catch(error=>{
@@ -30,21 +30,28 @@ export default function Dynamic(){
        },10000)
        return()=> clearInterval(interval);
     },[restData]);
-    return(
-        <Container>
-            <Row>
-                {restData.map((rest, k)=>(
-                    <Col key={k} xs={12} md={4} lg={3}>
-                        <Card>
+
+    if(restData.length>0){
+        return(
+            <Container>
+                <Row>
+                    {restData.map((rest, k)=>(
+                        <Col key={k} xs={12} md={4} lg={3}>
+                            <Card className='m-2'>
                             
-                            <Card.Img src={'data:image/png;base64,'+rest.image}/>
-                            <Card.Body>
-                                <Card.Title>{rest.name}</Card.Title>
-                            </Card.Body> 
-                        </Card>
-                    </Col> 
-                ))} 
-            </Row>
-        </Container>
-    )
+                                <Card.Img src={'data:image/png;base64,'+rest.image}/>
+                                <Card.Body>
+                                    <Card.Title>{rest.name}</Card.Title>
+                                </Card.Body> 
+                            </Card>
+                        </Col> 
+                    ))} 
+                </Row>
+            </Container>
+        )
+    }else{
+        return(
+            <header>No restaurants.</header>
+        )
+    }
 }

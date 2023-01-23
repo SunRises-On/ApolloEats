@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Data
 @Builder
@@ -37,5 +39,7 @@ public class Restaurant {
     @JoinColumn(name = "menu_id", referencedColumnName = "id")
     private Menu menu;
 
-
+    @JsonIgnore
+    @OneToMany(targetEntity = Dishes.class, mappedBy = "restaurant",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Dishes> dishesList;
 }
