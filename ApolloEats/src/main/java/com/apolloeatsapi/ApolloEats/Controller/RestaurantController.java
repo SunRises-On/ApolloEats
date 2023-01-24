@@ -1,11 +1,10 @@
 package com.apolloeatsapi.ApolloEats.Controller;
 
+import com.apolloeatsapi.ApolloEats.Entity.Dishes;
 import com.apolloeatsapi.ApolloEats.Entity.Image;
+import com.apolloeatsapi.ApolloEats.Entity.Menu;
 import com.apolloeatsapi.ApolloEats.Entity.Restaurant;
-import com.apolloeatsapi.ApolloEats.Repo.ImageRepo;
-import com.apolloeatsapi.ApolloEats.Repo.LicenseRepo;
-import com.apolloeatsapi.ApolloEats.Repo.MenuRepo;
-import com.apolloeatsapi.ApolloEats.Repo.RestaurantRepo;
+import com.apolloeatsapi.ApolloEats.Repo.*;
 import com.apolloeatsapi.ApolloEats.Service.RestaurantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(value="http://localhost:3000")
 @RestController
@@ -36,6 +32,8 @@ public class RestaurantController {
     private LicenseRepo licenseRepo;
     @Autowired
     private MenuRepo menuRepo;
+    @Autowired
+    private DishesRepo dishesRepo;
 
     @PostMapping(value="/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Restaurant> upload(
@@ -75,7 +73,21 @@ public class RestaurantController {
         }
         return  mapArrayListMap;
     }
+    @GetMapping("/{name}/menu")
+    public List<Dishes> GetDishes(@PathVariable String name) throws Exception {
+        Optional<Restaurant> optionalEntity = restaurantRepo.findByName(name);
+        if( optionalEntity.isEmpty()){
+            throw new Exception("Restaurant not found.");
+        }
+        //get restaurant object from optionalEntity
+        Restaurant restaurant = optionalEntity.get();
+        List<Dishes> dishes = restaurant.getDishesList();
 
+        if(dishes.isEmpty()){
+            throw new Exception("Dish list is not found.");
+        }
+        return restaurant.getDishesList();
+    }
 
 
 

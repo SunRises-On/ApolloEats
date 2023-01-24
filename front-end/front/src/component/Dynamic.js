@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card,Row,Col,Container} from 'react-bootstrap';
+import {Row,Container} from 'react-bootstrap';
 import ErrorService from '../services/ErrorService';
 import RestaurantsService from '../services/RestaurantsService';
 import Popup from './Popup';
