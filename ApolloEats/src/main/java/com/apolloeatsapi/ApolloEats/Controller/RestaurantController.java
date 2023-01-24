@@ -63,6 +63,10 @@ public class RestaurantController {
             byte[] imageByte = restaurant.getImage().getPic();
             map.put("image", imageByte);
 
+            //add id for restaurants
+            Long id = restaurant.getId();
+            map.put("id", id);
+
             arrayListMap.add(map);
             mapArrayListMap.put("restaurant",arrayListMap);
 
