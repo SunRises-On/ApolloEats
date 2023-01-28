@@ -1,5 +1,5 @@
 import { Modal,Button } from "react-bootstrap";
-import { useState } from "react";
+import React, { useState } from "react";
 import RestaurantsService from "../services/RestaurantsService";
 import ErrorService from "../services/ErrorService";
 export default function Popup({rest, id, onHide, show}){

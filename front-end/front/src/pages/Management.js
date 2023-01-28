@@ -1,5 +1,6 @@
-import { useState } from "react"; 
-import { Table,Collapse,Button, ToggleButton } from "react-bootstrap";
+import React,{ useState } from "react"; 
+import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
+import  { Table,Collapse,Button, ToggleButton } from "react-bootstrap";
 function Management(){
     const [open,setOpen] = useState(false);
     const [isEditing,setIsEditing] = useState(false);
@@ -25,6 +26,7 @@ function Management(){
                             <th>Restaurant Name</th>
                             <th>Hide</th>
                             <th>Edit</th>
+                            <th>Menu</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +51,10 @@ function Management(){
                                 >
                                     { !isEditing ? 'Edit' : 'Save'}
                                 </Button>
+                            </td>
+                            <td>
+                                <BsFillCaretDownFill/>
+                                <BsFillCaretUpFill/>
                             </td>
                         </tr>
                         <Collapse in={open}>
