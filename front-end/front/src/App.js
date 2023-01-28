@@ -13,6 +13,7 @@ import {setAuthToken} from './helpers/setAuthToken.js';
 //component
 import UserHeader from './component/UserHeader';
 import Footer from './component/Footer';
+import Management from './pages/Management';
 
 
 
@@ -40,6 +41,7 @@ function App() {
                 <Route element={<BasicLayout/>}>
                   <Route path='restaurants/' element={<Restaurants/>}/>
                   <Route path='restaurants/register' element={<RestRegister/>}/> 
+                  <Route path='restaurants/management' element={<Management/>}/>
                 </Route>
               </Route>
               <Route path="/" element={<BasicLayout/>}>

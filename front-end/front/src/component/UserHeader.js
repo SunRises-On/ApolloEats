@@ -13,6 +13,7 @@ function UserHeader(){
           <Container fluid>
           <NavDropdown className='ms-5 me-5' title="Menu">
             <NavDropdown.Item href="restaurants/register">Register Restaurant</NavDropdown.Item>
+            <NavDropdown.Item href="restaurants/management">Manage Restaurant</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action4">
                     Another action
                 </NavDropdown.Item>
