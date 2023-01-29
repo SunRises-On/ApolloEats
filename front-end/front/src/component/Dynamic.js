@@ -64,7 +64,6 @@ export default function Dynamic(){
                             <Popup 
                              show={open} 
                              onHide={handleClose} 
-                             //id={'${isClicked.id}-${isClicked.name}'}
                              rest={isClicked}
                             />
                     } 

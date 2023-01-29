@@ -1,17 +1,26 @@
-import React,{ useState } from "react"; 
+import React,{ useState, useEffect } from "react"; 
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
-import  { Table,Collapse,Button, ToggleButton, Form } from "react-bootstrap";
-import { click } from "@testing-library/user-event/dist/click";
+import  { Table,Collapse,Button, Form } from "react-bootstrap";
 function Management(){
     const [open,setOpen] = useState(false);
+    const [add,setAdd] = useState(false);
     const [isEditing,setIsEditing] = useState(false);
     const [isShowing, setIsShowing] = useState(false);
     const [originalRegister, setOriginalRegister] = useState(false);
-
-
+    ///////////////////////////////////////////////////////////////////
+    const [value,setValue] = useState({
+        name: "Dish Name beeb",
+        price : "$1.00 boop"
+    });
+    const [initialValue, setInitialValue] =useState([]);
+    const changeHandler = (e) =>{
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value
+        });
+    };
     const [isEditing2, setIsEditing2] = useState(false);
-    const [saveName, setSaveName] = useState(false);
-    const [savePrice, setSavePrice] = useState(false);
+///////////////////////////////////////////////////////////////
 
     const handleEdit = () =>{
         console.log("in handleEdit");
@@ -26,6 +35,10 @@ function Management(){
         }
     }
 
+    const handleAdd = () =>{
+        setAdd(!add);
+    }
+////////////////////////////////////////////////////////////////
     const handleEdit2 = () =>{
         console.log("in handleEdit2");
         setIsEditing2(!isEditing2);
@@ -33,14 +46,32 @@ function Management(){
 
     const handleSave2 = () => {
         console.log("in handleSave2");
+        console.log( "initial name : " + initialValue.name);
+        //if string is different do api call        
+
         setIsEditing2(!isEditing2);
     }
+
+     useEffect(()=>{
+        console.log("in use Effect");
+        //set initial values
+        setInitialValue({
+            ...initialValue,
+            name: value.name,
+            price: value.price
+        });
+     },[])
+    // useEffect(()=> {
+    //     setValue(...initialValue2)
+    // },[initialValue2])
 
     return(
         <div className="main">
             <header>Restaurant Management</header>
             <>
-                <Table striped bordered hover>
+                <Table striped bordered hover
+                
+                >
                     <thead>
                         <tr>
                             <th
@@ -50,13 +81,16 @@ function Management(){
                             style={{width: '30%'}}
                             >Restaurant Name</th>
                             <th
-                            style={{width: '20%'}}
+                            style={{width: '15%'}}
                             >Hide</th>
                             <th
-                            style={{width: '20%'}}
+                            style={{width: '15%'}}
                             >Edit</th>
                             <th
-                            style = {{width: '20%'}}
+                            style={{width: '15%'}}
+                            >Dish</th>
+                            <th
+                            style = {{width: '15%'}}
                             >Menu</th>
                         </tr>
                     </thead>
@@ -86,6 +120,15 @@ function Management(){
                                     { !isEditing ? 'Edit' : 'Save'}
                                 </Button>
                             </td>
+                            <td>
+                                <Button
+                                variant = 'success'
+                                size="sm"
+                                onClick={handleAdd}
+                                >
+                                    Add
+                                </Button>
+                            </td>
                             <td
                             onClick={()=>setOpen(!open)} 
                             >
@@ -95,7 +138,7 @@ function Management(){
                         <Collapse in={open}>
                             <tr>
                                 <td 
-                                colSpan={5}
+                                colSpan={6}
                                 >
                                     <Table className="mb-0">
                                         <thead>
@@ -130,10 +173,28 @@ function Management(){
                                                 >1</td>
                                                 <td
                                                 colSpan={1}
-                                                >Dish Name</td>
+                                                >
+                                                    <input
+                                                    value={value.name}
+                                                    type='text'
+                                                    name='name'
+                                                    disabled={!isEditing2 ? true : false}
+                                                    onChange={changeHandler}
+                                                    >
+                                                    </input>
+                                                </td>
                                                 <td
                                                 colSpan={1}
-                                                >$1.00</td>
+                                                >
+                                                    <input
+                                                    value={value.price}
+                                                    type='text'
+                                                    name='price'
+                                                    disabled={!isEditing2? true : false}
+                                                    onChange={changeHandler}
+                                                    >
+                                                    </input>
+                                                </td>
                                                 <td
                                                 colSpan={1}
                                                 >
@@ -156,6 +217,13 @@ function Management(){
                         </Collapse>
                     </tbody>
                 </Table>
+                {/* {open && 
+                            //<Popup 
+                            // show={open} 
+                            // onHide={handleClose} 
+                            // rest={isClicked}
+                            ///>
+                    }  */}
             </>
         </div>
     );
