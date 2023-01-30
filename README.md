@@ -15,8 +15,16 @@ Backend
 - Spring Boot
 - Spring Security
 - JWT
+- Java
+- MySQL
 
 Frontend
 - React.js
+- JavaScript
+- HTML
+- CSS
 - react-bootstrap
 - Formik
+
+## Case Study
+Case study:  Food Delivery Platform – Vendor Management
