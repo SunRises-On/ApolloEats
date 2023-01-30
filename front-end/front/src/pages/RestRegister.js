@@ -44,7 +44,6 @@ function RestRestaurant(){
             console.log(image);
             console.log(license);
             console.log(menu);
-            alert(JSON.stringify(values));
             const formData = new FormData();
             
             formData.append('files', image);

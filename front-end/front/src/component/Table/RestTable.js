@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer } from "react";
 import { Table,Form,Button,Collapse } from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
 import DishTable from "./DishTable";
-function RestTable ({rest, deleteD}){
+function RestTable ({rest, deleteD, openModal}){
     //console.log("RestTable");
     //console.log(rest.menu);
     //console.log(rest.name);
@@ -30,6 +30,7 @@ function RestTable ({rest, deleteD}){
     }
     const handleAdd = () =>{
         setAdd(!add);
+        openModal(add, rest.name);
     }
     return(
         <>
