@@ -20,3 +20,6 @@ Frontend
 - React.js
 - react-bootstrap
 - Formik
+
+## Case Study
+Case study:  Food Delivery Platform – Vendor Management
