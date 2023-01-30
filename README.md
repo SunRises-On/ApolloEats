@@ -15,10 +15,14 @@ Backend
 - Spring Boot
 - Spring Security
 - JWT
+- Java
 - MySQL
 
 Frontend
 - React.js
+- JavaScript
+- HTML
+- CSS
 - react-bootstrap
 - Formik
 
