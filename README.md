@@ -4,10 +4,18 @@ Restaurant App where you can add new restaurants. The new restaurants are create
 
 Restaurants can be managed in the Management page. Where restaurants can be shown or hidden. Each restaurant can add new dishes. Dishes can be edited or deleted.
 
+## Security
+Users can register with an email and password. After either logging in or registering the Backend will return a JWT token which will authorize the user with full access to the application. The JWT token will expire after a set period of time. 
+
+Users not authenticated will only have access to the home , login , and register pages.
+
 ## Technology
 
--Spring Boot
--Spring Security
--JWT
--React.js
--react-bootstrap
+Backend
+- Spring Boot
+- Spring Security
+- JWT
+Frontend
+- React.js
+- react-bootstrap
+- Formik
