@@ -15,6 +15,7 @@ Backend
 - Spring Boot
 - Spring Security
 - JWT
+- MySQL
 
 Frontend
 - React.js
