@@ -11,7 +11,7 @@ export const RestCard = ({rest, handleOpen})=>{
             >
                 <Card.Img src={'data:image/png;base64,'+rest.image}/>
                 <Card.Body>
-                    <Card.Title>{rest.name} id ={rest.id}</Card.Title>
+                    <Card.Title>{rest.name} </Card.Title>
                 </Card.Body> 
             </Card>
         </Col> 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -72,6 +73,48 @@ public class RestaurantController {
             System.out.println("Restaurant name : " + restaurantName);
         }
         return  mapArrayListMap;
+    }
+    @GetMapping("/dishes")
+    public Map<String,ArrayList<Map<String,Object>>> GetDishes(){
+        List<Restaurant> restaurantList = restaurantRepo.findAll();
+
+        ArrayList<Map<String,Object>> topArrayListMap = new ArrayList<>();
+
+        Map<String, ArrayList<Map<String,Object>>> mapArrayListMap = new HashMap<>();
+      //  ArrayList<Map<String,Object>> arrayListMap = new ArrayList<>();
+
+        for(Restaurant restaurant : restaurantList){
+            Map<String, Object> map = new HashMap<>();
+
+            String restName = restaurant.getName();
+            map.put("name", restName);
+            Long restId = restaurant.getId();
+            map.put("id", restId);
+            boolean restRegistered = restaurant.isRegistered();
+            map.put("registered", restRegistered);
+           // Map<String, Object> menu = new HashMap<>();
+            List<Dishes> dishesList = restaurant.getDishesList();
+            ArrayList<Map<String,Object>> arrayListMap = new ArrayList<>();
+
+            System.out.println(dishesList.toString());
+            for(Dishes dishes: dishesList){
+                Map<String, Object> map2 = new HashMap<>();
+                String dishName = dishes.getName();
+                map2.put("name", dishName);
+                Long dishId =dishes.getId();
+                map2.put("id", dishId);
+                BigDecimal dishPrice = dishes.getPrice();
+                map2.put("price", dishPrice);
+                arrayListMap.add(map2);
+
+                map.put("menu",arrayListMap);
+                System.out.println("dish name = " + dishes.getName() + " rest name = " + dishes.getRestaurant());
+            }
+            topArrayListMap.add(map);
+            mapArrayListMap.put("restaurant",topArrayListMap);
+
+        }
+        return mapArrayListMap;
     }
     @GetMapping("/{name}/menu")
     public List<Dishes> GetDishes(@PathVariable String name) throws Exception {

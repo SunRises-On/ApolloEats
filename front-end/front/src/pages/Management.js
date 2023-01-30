@@ -2,6 +2,8 @@ import React,{ useState, useEffect } from "react";
 import  { Table,Collapse,Button, Form, Modal, ModalBody } from "react-bootstrap";
 import { BsSave } from "react-icons/bs";
 import RestTable from "../component/Table/RestTable";
+import ErrorService from "../services/ErrorService";
+import RestaurantsService from "../services/RestaurantsService";
 function Management(){
     const [popup, setPopup] = useState(false);
     const [popRestName, setPopRestName] = useState("");
@@ -9,46 +11,121 @@ function Management(){
         name: "",
         price : ""
     });
-    const [restData,setRestData] = useState({
-        restaurant :
-        [
+    const [restData, setRestData] = useState({
+        restaurant: [
             {
-                id: 1, 
-                name:"FrugalEats", 
-                registered: true,
+                id:0,
+                name:"no name",
+                registered: false,
                 menu:[
                     {
-                        id:1,
-                        name:"Pizza",
-                        price:"$1.00"
-                    },
-                    {
-                        id:2,
-                        name:"Soup",
-                        price:"$2.50"
+                        id:0,
+                        name:"no dish name",
+                        price:"$0"
                     }
                 ]
-            },
-            {
-                id:  2,
-                name: "Sonic",
-                registered: true,
-                menu:[
-                    {
-                        id:1,
-                        name:"Tater Tots",
-                        price:"$2.50"
-                    },
-                    {
-                        id:2,
-                        name:"Diet Coke",
-                        price:"$3.99"
-                    }
-                ]
-                
             }
         ]
     });
+    //const [tempData, setTempData] = useState({});
+    function getDishesRestaurants(){
+        RestaurantsService.getRestDishes().then(response=>{
+            console.log("response  = " + JSON.stringify(response.data));
+            const temp = {
+                retaurant : response.data.restaurant
+            }
+            console.log(" temp " + JSON.stringify(temp) );
+            setRestData({
+                ...restData,
+                restaurant: temp.retaurant
+            })
+            // setValue({
+            //     ...value,
+            //     name: "", price:""
+            // })
+            // setRestData({
+            //     ...restData,
+            //     ...newArray
+            // })
+            console.log(restData);
+            console.log(restData);
+            console.log(restData);
+            // console.log(response.data);
+            // const temp = response.data.restaurant;
+            // setRestData(JSON.parse(JSON.stringify(temp)));
+            // console.log(restData);
+            // console.log("tempData = " + JSON.parse(JSON.stringify(restData)));
+            // console.log("temptData =" + JSON.stringify(restData));
+           // setRestData(...response.data.restaurant);
+            //const temp = response.data.restaurant;
+            
+
+           // setRestData(JSON.parse(temp));
+            //setRestData(JSON.parse(JSON.stringify(temp.restaurant)));
+           // console.log(restData);
+           // console.log(JSON.stringify(restData));
+            
+        }).catch(error =>{
+            console.log("Error from Management.js");
+            ErrorService.handle(error);
+        })
+    }
+     useEffect(()=>{
+    //     //load from database on render
+    //     if(isLoading === false){
+    //      console.log("Load on restaurants on render.");
+    //      getRegRestaurants();
+    //      setIsLoading(true);
+    //     }
+    //     const interval=setInterval(()=>{
+    //      console.log("Polling database every 10 secs.");
+    //      getRegRestaurants();
+    //     },10000)
+    //     return()=> clearInterval(interval);
+    //  },[restData]);
+    // useEffect(()=>{
+        getDishesRestaurants();
+    },[]);
+    // const [restData,setRestData] = useState({
+    //      restaurant :
+    //     [
+    //         {
+    //             id: 1, 
+    //             name:"FrugalEats", 
+    //             registered: true,
+    //             menu:[
+    //                 {
+    //                     id:1,
+    //                     name:"Pizza",
+    //                     price:"$1.00"
+    //                 },
+    //                 {
+    //                     id:2,
+    //                     name:"Soup",
+    //                     price:"$2.50"
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             id:  2,
+    //             name: "Sonic",
+    //             registered: true,
+    //             menu:[
+    //                 {
+    //                     id:1,
+    //                     name:"Tater Tots",
+    //                     price:"$2.50"
+    //                 },
+    //                 {
+    //                     id:2,
+    //                     name:"Diet Coke",
+    //                     price:"$3.99"
+    //                 }
+    //             ]
+                
+    //         }
+    //     ]
+    // });
 
     function deleteD(restName, id){
         console.log("restname = " + restName + " id = " + id);
@@ -63,8 +140,8 @@ function Management(){
             }
             return rest
         })
-        
-        console.log(oldArray);
+        console.log("restData = " + JSON.stringify(restData));
+        console.log("oldArray = " + JSON.stringify(oldArray));
         setRestData({
             ...restData,
             ...oldArray
@@ -83,6 +160,8 @@ function Management(){
             }
             return rest
         })
+        console.log("restData = " + JSON.stringify(restData));
+        console.log("oldArray = " + JSON.stringify(oldArray));
         setRestData({
             ...restData,
             ...newArray
@@ -156,6 +235,16 @@ function Management(){
                         </tr>
                     </thead>
                     <tbody>
+                        {/* {restData.restaurant.map((rest)=>(
+                            <RestTable
+                            key={rest.name}
+                            rest={rest}
+                            id={rest.id}
+                            deleteD={deleteD}
+                            openModal={openModal}
+                            //handleOpen={handleOpen}
+                            />
+                        ))}  */}
                         {restData.restaurant.map((rest)=>(
                             <RestTable
                             key={rest.name}
@@ -166,6 +255,7 @@ function Management(){
                             //handleOpen={handleOpen}
                             />
                         ))} 
+                       
                     </tbody>
                 </Table>
                  {popup && 
