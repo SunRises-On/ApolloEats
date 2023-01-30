@@ -1,10 +1,9 @@
 import React,{ useState, useEffect } from "react"; 
 import  { Table,Collapse,Button, Form } from "react-bootstrap";
-import MenuTable from "../component/Table/MenuTable";
 import RestTable from "../component/Table/RestTable";
 function Management(){
 
-    const restData ={
+    const [restData,setRestData] = useState({
         restaurant :
         [
             {
@@ -43,9 +42,28 @@ function Management(){
                 
             }
         ]
+    });
+
+    function deleteD(restName, id){
+        console.log("restname = " + restName + " id = " + id);
+
+        const oldArray = restData.restaurant.map( rest=>{
+            if(rest.name.valueOf() === restName.valueOf()){
+                let newMenu = rest.menu.filter( dish=>{
+                    return dish.id != id
+                } )
+                rest.menu = newMenu;
+                return rest
+            }
+            return rest
+        })
+        console.log(oldArray);
+        setRestData({
+            ...restData,
+            ...oldArray
+        })
+        
     }
-
-
     return(
         <div className="main">
             <header>Restaurant Management</header>
@@ -67,6 +85,7 @@ function Management(){
                             key={rest.name}
                             rest={rest}
                             id={rest.id}
+                            deleteD={deleteD}
                             //handleOpen={handleOpen}
                             />
                         ))} 

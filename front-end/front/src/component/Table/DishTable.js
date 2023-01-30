@@ -1,19 +1,33 @@
 import React, { useEffect, useState, useReducer } from "react"; 
 import {Button, Table } from "react-bootstrap";
 
-function DishTable ({dish, restName}){
+function DishTable ({dish,id,restName,deleteD}){
+    const [deleteDish,setDishDelete] = useState(false);
     const [value,setValue] = useState({
-        name: "Dish Name beeb",
-        price : "$1.00 boop"
+        name: "",
+        price : ""
     });
-    const [initialValue, setInitialValue] =useState([]);
+    const [initialVal, setInitialVal]=useState({
+        name: "",
+        price: ""
+    });
+
     const changeHandler = (e) =>{
+        console.log("change = " + e.target.value);
         setValue({
             ...value,
             [e.target.name]: e.target.value
         });
     };
+    const handleDelete = () =>{
+        console.log("In handle Delete");
+        setDishDelete(!deleteDish);
+        //api call
 
+        deleteD(restName, dish.id);
+  
+        //then call api update function from Management js!!!
+    }
     const handleEdit2 = () =>{
         console.log("in handleEdit2");
         setIsEditing2(!isEditing2);
@@ -21,8 +35,33 @@ function DishTable ({dish, restName}){
 
     const handleSave2 = () => {
         console.log("in handleSave2");
-        console.log( "initial name : " + initialValue.name);
+        
         //if string is different do api call        
+        if( initialVal.name.valueOf() != value.name.valueOf()){
+            //api call update
+            console.log("Api update name "); 
+
+            //then change inital value
+            setInitialVal({
+                ...initialVal,
+                name: value.name
+            })
+
+            //then call api update function from Management js !!
+
+        }
+        else if( initialVal.price.valueOf() != value.price.valueOf()){
+            //api call update
+            console.log("Api call price");
+
+            //then change initial value
+            setInitialVal({
+                ...initialVal,
+                price: value.price
+            })
+
+            //then call api update function from Management js !!!!
+        }
 
         setIsEditing2(!isEditing2);
     }
@@ -30,15 +69,19 @@ function DishTable ({dish, restName}){
      useEffect(()=>{
         console.log("in use Effect");
         //set initial values
-        setInitialValue({
-            ...initialValue,
-            name: value.name,
-            price: value.price
+        setInitialVal({
+            ...initialVal,
+            name: dish.name,
+            price: dish.price
+        });
+
+        setValue({
+            ...value,
+            name: dish.name,
+            price: dish.price
         });
      },[])
-    // useEffect(()=> {
-    //     setValue(...initialValue2)
-    // },[initialValue2])
+
 
     const [isEditing2, setIsEditing2] = useState(false);
     return(
@@ -48,7 +91,7 @@ function DishTable ({dish, restName}){
             </td>
             <td colSpan={1}>
                 <input
-                value={dish.name}
+                value={value.name}
                 type='text'
                 name='name'
                 disabled={!isEditing2 ? true : false}
@@ -57,7 +100,7 @@ function DishTable ({dish, restName}){
             </td>
             <td colSpan={1}>
                 <input
-                value={dish.price}
+                value={value.price}
                 type='text'
                 name='price'
                 disabled={!isEditing2? true : false}
@@ -75,7 +118,15 @@ function DishTable ({dish, restName}){
             </td>
             <td 
             colSpan={1} 
-            >Delete</td>
+            >
+                <Button
+                variant = 'danger'
+                size = 'sm'
+                onClick={ handleDelete}
+                >
+                    Delete
+                </Button>
+            </td>
         </tr>
     );
 }
