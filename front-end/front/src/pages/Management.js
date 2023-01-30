@@ -1,6 +1,5 @@
 import React,{ useState, useEffect } from "react"; 
-import  { Table,Collapse,Button, Form, Modal, ModalBody } from "react-bootstrap";
-import { BsSave } from "react-icons/bs";
+import  { Table,Button, Modal, ModalBody } from "react-bootstrap";
 import RestTable from "../component/Table/RestTable";
 import ErrorService from "../services/ErrorService";
 import RestaurantsService from "../services/RestaurantsService";
@@ -39,31 +38,7 @@ function Management(){
                 ...restData,
                 restaurant: temp.retaurant
             })
-            // setValue({
-            //     ...value,
-            //     name: "", price:""
-            // })
-            // setRestData({
-            //     ...restData,
-            //     ...newArray
-            // })
-            console.log(restData);
-            console.log(restData);
-            console.log(restData);
-            // console.log(response.data);
-            // const temp = response.data.restaurant;
-            // setRestData(JSON.parse(JSON.stringify(temp)));
-            // console.log(restData);
-            // console.log("tempData = " + JSON.parse(JSON.stringify(restData)));
-            // console.log("temptData =" + JSON.stringify(restData));
-           // setRestData(...response.data.restaurant);
-            //const temp = response.data.restaurant;
-            
-
-           // setRestData(JSON.parse(temp));
-            //setRestData(JSON.parse(JSON.stringify(temp.restaurant)));
-           // console.log(restData);
-           // console.log(JSON.stringify(restData));
+           
             
         }).catch(error =>{
             console.log("Error from Management.js");

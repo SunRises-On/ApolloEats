@@ -132,6 +132,20 @@ public class RestaurantController {
         return restaurant.getDishesList();
     }
 
+    //Update switch registered = !registered
+    //You have to have @RequestBody for @Put mapping
+    @PutMapping("/{name}/registered")
+    public ResponseEntity<Restaurant> updateRegistered(
+            @PathVariable String name,
+            @RequestBody Restaurant restaurantDetails) throws Exception{
+        System.out.println("in the ResponseEntity");
+        System.out.println("The restaurant name = " + name);
+        Restaurant restaurant = restaurantRepo.findByName(name)
+                .orElseThrow(()-> new Exception("Restaurant not found : " + name));
+        restaurant.setRegistered( !restaurant.isRegistered());
+        final Restaurant updatedRestaurant = restaurantRepo.save(restaurant);
+        return ResponseEntity.ok(updatedRestaurant);
+    }
 
 
 }

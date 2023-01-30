@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useReducer } from "react"; 
 import { Table,Form,Button,Collapse } from "react-bootstrap";
 import {BsFillCaretDownFill, BsFillCaretUpFill} from 'react-icons/bs';
+import RestaurantsService from "../../services/RestaurantsService";
+import ErrorService from "../../services/ErrorService";
 import DishTable from "./DishTable";
 function RestTable ({rest, deleteD, openModal}){
-    //console.log("RestTable");
-    //console.log(rest.menu);
-    //console.log(rest.name);
+    
     const [open,setOpen] = useState(false);
     const [add,setAdd] = useState(false);
     const [isEditing,setIsEditing] = useState(false);
@@ -21,8 +21,21 @@ function RestTable ({rest, deleteD, openModal}){
         setIsEditing(!isEditing);
         if(isShowing != originalRegister){
             console.log("Api call !!! Change registration");
-            setOriginalRegister(!originalRegister);
+            updateRegistered();
         }
+    }
+    function updateRegistered(){
+        const name = rest.name;
+        console.log("Name  :" + name);
+        RestaurantsService.updateRegistered(name, rest).then(response=>{
+            console.log("response from registered = " + response.data);
+            setOriginalRegister(!originalRegister);
+
+            
+        }).catch(error =>{
+            console.log("Error from Management.js");
+            ErrorService.handle(error);
+        })
     }
     const handleOpen = () =>{
       //  console.log("In handleOpen open = " + open);

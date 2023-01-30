@@ -29,5 +29,13 @@ class RestaurantsService{
         console.log(headers);
         return axios.get(REST_API_BASE_URL + "dishes",{headers});
     }
+    updateRegistered(name, rest){
+        let token = sessionStorage.getItem('token');
+        const headers = {
+                Authorization: 'Bearer '.concat(token)
+        };
+        console.log(headers);
+        return axios.put(REST_API_BASE_URL + name + "/registered",rest,{headers});
+    }
 }
 export default new RestaurantsService();
